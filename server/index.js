@@ -9,6 +9,7 @@ app.use(cors());
 const server = http.createServer(app);
 
 const io = new Server(server, {
+  port: 8080,
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
