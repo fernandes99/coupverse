@@ -1,19 +1,23 @@
-const http = require("http");
 const express = require("express");
-const { Server } = require("socket.io");
 const cors = require("cors");
+const https = require("https");
+const WebSocket = require("ws").Server;
+const HttpsServer = require("https").createServer;
+const fs = require("fs");
 const app = express();
+const path = require("path");
 
 app.use(cors());
 
-const server = http.createServer(app);
+const options = HttpsServer({
+  cert: fs.readFileSync(path.resolve(__dirname, "./server.crt")),
+  key: fs.readFileSync(path.resolve(__dirname, "./key.pem")),
+});
 
-const io = new Server(server, {
-  port: 8080,
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
+const server = https.createServer(options, app);
+
+const io = new WebSocket({
+  server: server,
 });
 
 let users = [];
