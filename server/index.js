@@ -72,6 +72,6 @@ app.get("/", (req, res) => {
   res.send("Olá, mundo!");
 });
 
-server.listen(40, () => {
-  console.log("SERVER IS RUNNING ON PORT 40");
+server.listen(8080, () => {
+  console.log("SERVER IS RUNNING ON PORT 8080");
 });
