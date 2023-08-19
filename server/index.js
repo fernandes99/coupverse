@@ -10,8 +10,8 @@ const path = require("path");
 app.use(cors());
 
 const options = HttpsServer({
-  cert: fs.readFileSync(path.resolve(__dirname, "./server.crt")),
-  key: fs.readFileSync(path.resolve(__dirname, "./key.pem")),
+  cert: fs.readFileSync("server.crt", "utf8"),
+  key: fs.readFileSync("key.pem", "utf8"),
 });
 
 const server = https.createServer(options, app);
