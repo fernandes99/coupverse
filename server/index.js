@@ -2,17 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const https = require("https");
 const WebSocket = require("ws").Server;
-const HttpsServer = require("https").createServer;
 const fs = require("fs");
 const app = express();
 const path = require("path");
 
 app.use(cors());
 
-const options = HttpsServer({
-  cert: fs.readFileSync("server.crt", "utf8"),
-  key: fs.readFileSync("key.pem", "utf8"),
-});
+const options = {
+  key: fs.readFileSync(path.join(__dirname, "cert", "key.pem")),
+  cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem")),
+};
 
 const server = https.createServer(options, app);
 
