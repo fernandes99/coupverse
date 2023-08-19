@@ -68,6 +68,6 @@ app.get("/", (req, res) => {
   res.send("Olá, mundo!");
 });
 
-server.listen(80, () => {
-  console.log("SERVER IS RUNNING ON PORT 80");
+server.listen(8080, () => {
+  console.log("SERVER IS RUNNING ON PORT 8080");
 });
