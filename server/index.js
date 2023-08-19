@@ -1,17 +1,17 @@
 const express = require("express");
-const cors = require("cors");
 const WebSocket = require("ws").Server;
 const HttpsServer = require("https").createServer;
 const fs = require("fs");
 const app = express();
 const path = require("path");
 
-app.use(cors());
-
-const server = HttpsServer({
-  key: fs.readFileSync(path.join(__dirname, "cert", "key.pem")),
-  cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem")),
-});
+const server = HttpsServer(
+  {
+    key: fs.readFileSync(path.join(__dirname, "cert", "key.pem")),
+    cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem")),
+  },
+  app
+);
 
 const io = new WebSocket({
   server: server,
@@ -70,5 +70,5 @@ app.get("/", (req, res) => {
 });
 
 server.listen(8080, () => {
-  console.log("SERVER IS RUNNING ON PORT 8080");
+  console.log("Servidor rodando na porta 8080");
 });
