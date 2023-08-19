@@ -63,6 +63,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(8080, () => {
-  console.log("SERVER IS RUNNING ON PORT 8080");
+server.listen(80, () => {
+  console.log("SERVER IS RUNNING ON PORT 80");
 });
