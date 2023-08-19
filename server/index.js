@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   port: 8080,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -63,6 +63,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log("SERVER IS RUNNING ON PORT 3001");
+server.listen(8080, () => {
+  console.log("SERVER IS RUNNING ON PORT 8080");
 });
