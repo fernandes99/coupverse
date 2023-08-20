@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import * as io from 'socket.io-client';
 
@@ -7,7 +6,7 @@ import './styles/reset.css';
 import './styles/global.css';
 import { LobbyPage } from './pages/lobby';
 
-const socket = io.connect('https://ec2-54-237-206-239.compute-1.amazonaws.com:8080');
+const socket = io.connect('http://ec2-54-196-71-101.compute-1.amazonaws.com:8080');
 
 function App() {
     // useEffect(() => {}, [socket]);
