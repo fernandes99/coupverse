@@ -6,7 +6,7 @@ import './styles/reset.css';
 import './styles/global.css';
 import { LobbyPage } from './pages/lobby';
 
-const socket = io.connect('http://ec2-54-196-71-101.compute-1.amazonaws.com:8080');
+const socket = io.connect('https://coupverse.one:8080');
 
 function App() {
     // useEffect(() => {}, [socket]);
