@@ -7,9 +7,9 @@ import './styles/global.css';
 import { LobbyPage } from './pages/lobby';
 import { GamePage } from './pages/game';
 
-const localhost = 'http://localhost:8080'; // inserir em config env
-// const coupverse = 'https://coupverse.one:8080'; // inserir em config env
-const socket = io.connect(localhost);
+// const localhost = 'http://localhost:8080'; // inserir em config env
+const coupverse = 'https://coupverse.one:8080'; // inserir em config env
+const socket = io.connect(coupverse);
 
 function App() {
     return (

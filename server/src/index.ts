@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors());
 
-const ENV_DEV = true;
+const ENV_DEV = false;
 const options = {
   key: fs.readFileSync(path.join(__dirname, "cert", "private.key")),
   cert: fs.readFileSync(path.join(__dirname, "cert", "certificate.crt")),
