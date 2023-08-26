@@ -35,7 +35,7 @@ export const S = {
         input {
             border-radius: 6px;
             border: 1px solid #e8e8e8;
-            min-width: 350px;
+            min-width: 380px;
             height: 48px;
             font-size: 16px;
             padding: 0 16px;

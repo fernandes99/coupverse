@@ -2,16 +2,18 @@ import { Server, Socket } from "socket.io";
 import { Global } from "../global/global";
 import { getUsersFilteredByRoom } from "../utils/general";
 
-export const registerUserHandlers = (io: Server, socket: Socket) => {
+export const registerGameHandlers = (io: Server, socket: Socket) => {
   const global = Global.getInstance();
 
-  const onReadyUser = (data: any) => {
+  const onStartGame = (data: any) => {
     const users = global.getState().users;
     const newUsers = users.map((user) => {
       if (user.id === socket.id) {
+        console.log("TESTE");
         return {
           ...user,
-          isReady: data.isReady,
+          cards: data.cards,
+          money: data.money,
         };
       }
 
@@ -19,11 +21,8 @@ export const registerUserHandlers = (io: Server, socket: Socket) => {
     });
 
     global.setState({ ...global, users: [...newUsers] });
-    io.in(data.roomId).emit(
-      "users:update",
-      getUsersFilteredByRoom(newUsers, data.roomId)
-    );
+    socket.emit("users:update", getUsersFilteredByRoom(newUsers, data.roomId));
   };
 
-  socket.on("user:on-ready", onReadyUser);
+  socket.on("game:on-start", onStartGame);
 };

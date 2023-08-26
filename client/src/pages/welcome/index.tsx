@@ -20,14 +20,14 @@ export const WelcomePage = ({ socket }: IWelcomePage) => {
     const createRoom = () => {
         const randomString = getRandomString();
 
-        storage.set('username', userName || 'Anônimo');
+        storage.set('username', userName || `Anônimo${Math.random().toFixed(5)}`);
         socket.emit('connect_room', { roomId, userName });
         setRoomId(randomString);
         navigate(`/sala/${randomString}/lobby`);
     };
 
     const enterRoom = () => {
-        storage.set('username', userName || 'Anônimo');
+        storage.set('username', userName || `Anônimo${Math.random().toFixed(5)}`);
         socket.emit('connect_room', { roomId, userName });
         navigate(`/sala/${roomId}/lobby`);
     };

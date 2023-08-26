@@ -5,12 +5,11 @@ import { WelcomePage } from './pages/welcome';
 import './styles/reset.css';
 import './styles/global.css';
 import { LobbyPage } from './pages/lobby';
+import { GamePage } from './pages/game';
 
 const socket = io.connect('http://localhost:8080');
 
 function App() {
-    // useEffect(() => {}, [socket]);
-
     return (
         <>
             <Router>
@@ -18,6 +17,7 @@ function App() {
                     <Route path='/' element={<Navigate to='/bem-vindo' replace />} />
                     <Route path='/bem-vindo' element={<WelcomePage socket={socket} />} />
                     <Route path='/sala/:roomId/lobby' element={<LobbyPage socket={socket} />} />
+                    <Route path='/sala/:roomId' element={<GamePage socket={socket} />} />
                 </Routes>
             </Router>
         </>

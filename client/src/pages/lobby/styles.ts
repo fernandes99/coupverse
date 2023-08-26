@@ -10,23 +10,22 @@ export const S = {
         > p {
             margin: 24px 0 12px;
         }
+    `,
+    Button: styled.button<{ isReady: boolean }>`
+        background-color: ${(props) => (props.isReady ? '#fef0c8' : '#fed262')};
+        height: 48px;
+        width: 100%;
+        color: #4d401f;
+        border-radius: 6px;
+        border: unset;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 8px;
 
-        button {
-            background-color: #fed262;
-            height: 48px;
-            width: 100%;
-            color: #4d401f;
-            border-radius: 6px;
-            border: unset;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 8px;
-
-            &:hover {
-                background-color: #f1c552;
-            }
+        &:hover {
+            background-color: #f1c552;
         }
     `,
     UserList: styled.ul`
@@ -37,6 +36,7 @@ export const S = {
         padding: 16px;
         border: 1px solid #e8e8e8;
         border-radius: 6px;
+        min-width: 380px;
 
         li {
             display: flex;

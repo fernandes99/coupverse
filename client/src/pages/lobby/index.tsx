@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { Logo } from '../../components/Logo';
 import { Container } from '../../styles/layout';
@@ -18,14 +18,19 @@ interface ILobbyPage {
 
 export const LobbyPage = ({ socket }: ILobbyPage) => {
     const { roomId } = useParams();
-    const userName = storage.get('username') || 'Anônimo';
+    const navigate = useNavigate();
+    const userName = storage.get('username') || `Anônimo${Math.floor(Math.random() * 1000)}`;
     const [connectedUsers, setConnectedUsers] = useState<IUsers[]>([]);
+    const [isReady, setIsReady] = useState(false);
 
-    console.log('connectedUsers', connectedUsers);
+    useMemo(() => socket.emit('user:on-ready', { roomId, isReady }), [isReady]);
 
-    const onReady = (isReady: boolean) => {
-        socket.emit('user:on-ready', { roomId, id: socket.id, isReady });
-    };
+    useEffect(() => {
+        if (!connectedUsers.length) return;
+        if (connectedUsers?.every((user) => user.isReady)) {
+            navigate(`/sala/${roomId}`);
+        }
+    }, [connectedUsers]);
 
     useEffect(() => {
         socket.on('room:connected-user', setConnectedUsers);
@@ -34,7 +39,6 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
 
     useEffect(() => {
         if (!roomId) return;
-
         socket.emit('room:connect', { roomId, userName });
     }, [roomId]);
 
@@ -55,7 +59,9 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
                         ))}
                     </>
                 </S.UserList>
-                <button onClick={() => onReady(true)}>Pronto</button>
+                <S.Button isReady={isReady} onClick={() => setIsReady(!isReady)}>
+                    {isReady ? 'Cancelar' : 'Pronto'}
+                </S.Button>
                 <S.SmallText>Quando todos estiverem pronto, o jogo irá iniciar.</S.SmallText>
             </S.Content>
         </Container>
