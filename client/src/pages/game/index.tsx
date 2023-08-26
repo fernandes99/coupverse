@@ -2,9 +2,8 @@ import { Socket } from 'socket.io-client';
 import { S } from './styles';
 import { UserBlock } from './components/UserBlock';
 import { Container } from '../../styles/layout';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getRandomCards } from '../../utils/general';
 import { IUser } from '../../types/users';
 import { ITurn } from '../../types/turns';
 
