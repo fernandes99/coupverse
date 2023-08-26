@@ -3,7 +3,7 @@ export interface IGlobal {
   turns?: ITurn[]; // TODO: separar estados dos turnos e usuários (não utilizar global)
 }
 
-interface IUser {
+export interface IUser {
   id: string;
   userName: string;
   roomId: string;
@@ -21,4 +21,25 @@ export interface ICard {
 export interface ITurn {
   roomId: string;
   currentUser: IUser | null;
+  currentAction: {
+    action: IAction;
+    message: string;
+    countSkipped: number;
+  } | null;
+}
+
+export interface IAction {
+  slug:
+    | "income"
+    | "foreign-aid"
+    | "coup"
+    | "tax"
+    | "assassinate"
+    | "exchange"
+    | "steal";
+  title: string;
+  influence: string;
+  blockableBy: string[];
+  isChallengeable: boolean;
+  transactionAmount: number;
 }

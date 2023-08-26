@@ -4,8 +4,8 @@ export interface IUser {
     roomId: string;
     isReady: boolean;
     isOwner: boolean;
-    money?: number;
-    cards?: ICard[];
+    money: number;
+    cards: ICard[];
 }
 
 interface ICard {

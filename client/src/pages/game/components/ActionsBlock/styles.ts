@@ -22,7 +22,9 @@ export const S = {
             margin-bottom: 8px;
         }
     `,
-    ActionHead: styled.div``,
+    ActionHead: styled.div`
+        margin-bottom: 8px;
+    `,
     ActionList: styled.ul`
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -38,10 +40,16 @@ export const S = {
         min-height: 38px;
         border: 1px solid #e4e4e4;
         border-radius: 8px;
+        transition: all 0.3s;
+        cursor: pointer;
 
         p {
             font-weight: 500;
             color: #232423;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
         }
     `,
     ActionMoney: styled.div<{ isNegative: boolean }>`
@@ -52,6 +60,44 @@ export const S = {
         span {
             font-weight: 600;
             color: ${(props) => (props.isNegative ? '#E72E2E' : '#E7A52E')};
+        }
+    `,
+    ActionButtons: styled.div`
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        button {
+            background-color: #fed262;
+            padding: 10px 24px;
+            border-radius: 6px;
+            border: unset;
+            color: #4d401f;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f1c552;
+            }
+        }
+    `,
+    ActionTimeBar: styled.div`
+        position: relative;
+        background-color: #e9e9e9;
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 8px;
+
+        & > div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            border-radius: 2px;
         }
     `
 };

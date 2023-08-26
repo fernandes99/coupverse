@@ -1,4 +1,4 @@
-import { IGlobal } from "../types/global";
+import { IGlobal, IUser } from "../types/global";
 
 export const getUsersFilteredByRoom = (
   users: IGlobal["users"],
@@ -11,4 +11,8 @@ export const verifyUserOwner = (users: IGlobal["users"]) => {
   return (
     users.length === 1 ? { ...users, isOwner: true } : users
   ) as IGlobal["users"];
+};
+
+export const getSelfUser = (users: IUser[], id: string) => {
+  return users.filter((user) => user.id === id);
 };

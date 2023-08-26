@@ -4,33 +4,60 @@ import CoinImage from '../../../../assets/img/coin.png';
 import { ITurn } from '../../../../types/turns';
 import { IUser } from '../../../../types/users';
 import { IAction } from '../../../../types/actions';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+const ACTION_TIME_DEFAULT = 10;
 
 interface IActionsBlock {
     turn: ITurn;
     userSelf: IUser;
     onAction: (actions: IAction) => void;
+    onSkip: () => void;
 }
 
-export const ActionsBlock = ({ turn, userSelf, onAction }: IActionsBlock) => {
+export const ActionsBlock = ({ turn, userSelf, onAction, onSkip }: IActionsBlock) => {
+    const [secondsToAction, setSecondsToAction] = useState(ACTION_TIME_DEFAULT);
     const isSelfTurn = useMemo(() => {
         return turn?.currentUser?.id === userSelf?.id;
     }, [turn, userSelf]);
+
+    useEffect(() => {
+        if (!turn.currentAction) return setSecondsToAction(ACTION_TIME_DEFAULT);
+
+        const interval = setInterval(() => {
+            if (secondsToAction > 0) {
+                return setSecondsToAction(secondsToAction - 1);
+            }
+
+            setSecondsToAction(ACTION_TIME_DEFAULT);
+            onSkip();
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [secondsToAction, turn.currentAction]);
 
     return (
         <S.Box>
             <S.ActionHead>
                 {isSelfTurn ? (
-                    <>
-                        <h2>É sua vez!</h2>
-                        <h3>Faça sua ação:</h3>
-                    </>
+                    turn.currentAction ? (
+                        <h2>Esperando a ação dos jogadores...</h2>
+                    ) : (
+                        <>
+                            <h2>É sua vez!</h2>
+                            <h3>Faça sua ação:</h3>
+                        </>
+                    )
+                ) : turn.currentAction ? (
+                    <h2>{turn.currentAction.message}</h2>
                 ) : (
-                    <h2>Esperando a ação do {turn?.currentUser?.userName}...</h2>
+                    <h2>Esperando a ação de {turn?.currentUser?.userName}...</h2>
                 )}
             </S.ActionHead>
 
-            {isSelfTurn && (
+            {isSelfTurn && !turn.currentAction && (
                 <S.ActionList>
                     {ACTIONS.map((action) => (
                         <S.ActionItem key={action.slug} onClick={() => onAction(action)}>
@@ -46,6 +73,28 @@ export const ActionsBlock = ({ turn, userSelf, onAction }: IActionsBlock) => {
                         </S.ActionItem>
                     ))}
                 </S.ActionList>
+            )}
+
+            {turn.currentAction && !isSelfTurn && (
+                <>
+                    <S.ActionButtons>
+                        <button>Desafiar</button>
+                        {turn.currentAction?.action.blockableBy.length && <button>Bloquear</button>}
+                        <button onClick={onSkip}>Passar</button>
+                    </S.ActionButtons>
+                    <S.ActionTimeBar>
+                        <div
+                            style={{
+                                width: `${secondsToAction >= ACTION_TIME_DEFAULT ? 100 : 0}%`,
+                                transition: `all ${ACTION_TIME_DEFAULT}s linear`,
+                                background: `${
+                                    secondsToAction >= ACTION_TIME_DEFAULT ? '#ffc511' : '#ff2d11'
+                                }`
+                            }}
+                        />
+                        <div />
+                    </S.ActionTimeBar>
+                </>
             )}
         </S.Box>
     );

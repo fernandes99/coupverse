@@ -15,19 +15,42 @@ interface IGamePage {
 
 export const GamePage = ({ socket }: IGamePage) => {
     const { roomId } = useParams();
-    const [users, setUsers] = useState<IUser[]>([]);
-    const [turn, setTurn] = useState<ITurn>({ roomId: roomId!, currentUser: null });
 
-    const userSelf = useMemo(() => {
-        return users.find((user) => user.id === socket.id);
-    }, [users]);
+    const [users, setUsers] = useState<IUser[]>([]);
+    const [turn, setTurn] = useState<ITurn>({
+        roomId: roomId!,
+        currentUser: null,
+        currentAction: null
+    });
+    const self = useMemo(() => users.find((user) => user.id === socket.id) || null, [users]);
 
     const onAction = (action: IAction) => {
-        console.log(action.slug);
+        if (action.slug === 'foreign-aid') {
+            socket.emit('turn:action', {
+                ...turn,
+                currentAction: {
+                    action,
+                    countSkipped: 1,
+                    message: `${self?.userName} pediu ajuda externa.`
+                }
+            });
+            return;
+        }
+
+        if (action.slug === 'income') {
+            socket.emit('user:update', { ...self, money: self!.money + action.transactionAmount });
+        }
 
         if (!action.blockableBy.length && !action.isChallengeable) {
-            socket.emit('turn:pass', turn);
+            socket.emit('turn:pass', {
+                ...turn,
+                currentUser: { ...self, money: self!.money + action.transactionAmount }
+            });
         }
+    };
+
+    const onSkip = () => {
+        socket.emit('turn:skip-action', turn);
     };
 
     useEffect(() => {
@@ -57,7 +80,7 @@ export const GamePage = ({ socket }: IGamePage) => {
                     ))}
                 </S.UserList>
 
-                <ActionsBlock turn={turn} userSelf={userSelf!} onAction={onAction} />
+                <ActionsBlock turn={turn} userSelf={self!} onAction={onAction} onSkip={onSkip} />
             </S.Content>
         </Container>
     );

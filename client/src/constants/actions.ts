@@ -59,3 +59,18 @@ export const ACTIONS = [
         transactionAmount: 2
     }
 ] as IAction[];
+
+const COUNTER_ACTIONS = [
+    {
+        slug: 'block_foreign_aid',
+        influences: [EnumSlugCards.DUKE]
+    },
+    {
+        slug: 'block_foreign_aid',
+        influences: [EnumSlugCards.AMBASSADOR, EnumSlugCards.CAPTAIN]
+    },
+    {
+        slug: 'block_assassinate',
+        influences: [EnumSlugCards.CONTESSA]
+    }
+];
