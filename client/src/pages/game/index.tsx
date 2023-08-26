@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import { IUser } from '../../types/users';
 import { ITurn } from '../../types/turns';
 import { ActionsBlock } from './components/ActionsBlock';
-import { ACTIONS } from '../../constants/actions';
 import { IAction } from '../../types/actions';
 
 interface IGamePage {
