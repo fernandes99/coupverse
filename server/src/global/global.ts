@@ -7,6 +7,7 @@ export class Global {
   private constructor() {
     this.state = {
       users: [],
+      turns: [],
     };
   }
 

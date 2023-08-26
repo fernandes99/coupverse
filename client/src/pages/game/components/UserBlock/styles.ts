@@ -44,14 +44,22 @@ export const S = {
 
         p {
             color: #232423;
-            margin-bottom: 4px;
+            margin: 4px 0px;
+            font-size: 14px;
         }
     `,
-    Card: styled.div`
+    Card: styled.div<{ show: boolean }>`
         width: 100%;
         padding: 8px 12px;
         border: 1px solid #e4e4e4;
         border-radius: 8px;
         font-size: 16px;
+        height: 34px;
+
+        background-image: ${(props) =>
+            !props.show
+                ? 'url(https://img.freepik.com/free-vector/abstract-organic-lines-background_1017-26669.jpg?w=2000)'
+                : ''};
+        background-size: cover;
     `
 };

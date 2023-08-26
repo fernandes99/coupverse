@@ -5,12 +5,8 @@ import { Logo } from '../../components/Logo';
 import { Container } from '../../styles/layout';
 import { S } from './styles';
 import { storage } from '../../utils/storage';
-
-interface IUsers {
-    id: string;
-    userName: string;
-    isReady: boolean;
-}
+import { IUser } from '../../types/users';
+import { getRandomCards } from '../../utils/general';
 
 interface ILobbyPage {
     socket: Socket;
@@ -20,7 +16,7 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
     const { roomId } = useParams();
     const navigate = useNavigate();
     const userName = storage.get('username') || `Anônimo${Math.floor(Math.random() * 1000)}`;
-    const [connectedUsers, setConnectedUsers] = useState<IUsers[]>([]);
+    const [connectedUsers, setConnectedUsers] = useState<IUser[]>([]);
     const [isReady, setIsReady] = useState(false);
 
     useMemo(() => socket.emit('user:on-ready', { roomId, isReady }), [isReady]);
@@ -39,8 +35,10 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
 
     useEffect(() => {
         if (!roomId) return;
-        socket.emit('room:connect', { roomId, userName });
+        socket.emit('room:connect', { roomId, userName, money: 2, cards: getRandomCards() });
     }, [roomId]);
+
+    console.log('connectedUsers', connectedUsers);
 
     return (
         <Container>

@@ -9,6 +9,10 @@ export const S = {
     Title: styled.h1`
         color: #fff;
         font-size: 32px;
+
+        strong {
+            font-weight: bold;
+        }
     `,
     UserList: styled.div`
         display: grid;

@@ -5,13 +5,14 @@ import CoinImage from '../../../../assets/img/coin.png';
 interface IUserBlock {
     name: string;
     money: number;
+    showCards: boolean;
     cards: {
         name: string;
         slug: string;
     }[];
 }
 
-export const UserBlock = ({ name, money, cards }: IUserBlock) => {
+export const UserBlock = ({ name, money, cards, showCards }: IUserBlock) => {
     return (
         <S.Box>
             <S.Title>{name}</S.Title>
@@ -26,9 +27,11 @@ export const UserBlock = ({ name, money, cards }: IUserBlock) => {
                 </S.MoneyBlock>
             </S.Status>
             <S.CardBlock>
-                <p>Suas cartas:</p>
-                {cards.map((card) => (
-                    <S.Card key={card.slug}>{card.name}</S.Card>
+                <p>{showCards ? 'Suas cartas' : `Cartas de ${name}`}</p>
+                {cards?.map((card) => (
+                    <S.Card key={card.slug} show={showCards}>
+                        {showCards ? card.name : ''}
+                    </S.Card>
                 ))}
             </S.CardBlock>
         </S.Box>

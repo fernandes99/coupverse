@@ -23,9 +23,9 @@
         "react/react-in-jsx-scope": "off",
         "react/require-default-props": "off",
         "react/jsx-props-no-spreading": "off",
-        "no-debugger": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unused-vars": [
             "warn",
             {
@@ -33,6 +33,7 @@
             }
         ],
         "no-unused-vars": ["warn", { "varsIgnorePattern": "^_" }],
-        "no-use-before-define": "off"
+        "no-use-before-define": "off",
+        "no-debugger": "off"
     }
 }

@@ -1,17 +1,24 @@
 export interface IGlobal {
-  users: IUsers[];
+  users: IUser[];
+  turns?: ITurn[]; // TODO: separar estados dos turnos e usuários (não utilizar global)
 }
 
-interface IUsers {
+interface IUser {
   id: string;
   userName: string;
   roomId: string;
   isReady: boolean;
+  isOwner: boolean;
   money?: number;
-  cards?: ICards[];
+  cards?: ICard[];
 }
 
-interface ICards {
+export interface ICard {
   name: string;
   slug: string;
+}
+
+interface ITurn {
+  roomId: string;
+  currentUser: IUser | null;
 }
