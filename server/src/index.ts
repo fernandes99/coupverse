@@ -8,19 +8,19 @@ const express = require("express");
 const https = require("https");
 const http = require("http");
 const fs = require("fs");
-const app = express();
-const cors = require("cors");
 const path = require("path");
+const cors = require("cors");
+const app = express();
 
-const ENV_DEV = true;
+app.use(cors());
+
+const ENV_DEV = false;
 const options = {
   key: fs.readFileSync(path.join(__dirname, "cert", "private.key")),
   cert: fs.readFileSync(path.join(__dirname, "cert", "certificate.crt")),
 };
 
 const global = Global.getInstance();
-
-app.use(cors());
 
 const server = ENV_DEV
   ? http.createServer(app)

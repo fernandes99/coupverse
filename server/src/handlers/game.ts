@@ -9,7 +9,6 @@ export const registerGameHandlers = (io: Server, socket: Socket) => {
     const users = global.getState().users;
     const newUsers = users.map((user) => {
       if (user.id === socket.id) {
-        console.log("TESTE");
         return {
           ...user,
           cards: data.cards,
