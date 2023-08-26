@@ -1,22 +1,38 @@
+export enum EnumSlugCards {
+    DUKE = 'duke',
+    AMBASSADOR = 'ambassador',
+    CAPTAIN = 'captain',
+    ASSASSIN = 'assassin',
+    CONTESSA = 'contessa'
+}
+
+export enum EnumNameCards {
+    DUKE = 'Duque',
+    AMBASSADOR = 'Embaixadora',
+    CAPTAIN = 'Capitão',
+    ASSASSIN = 'Assassino',
+    CONTESSA = 'Contessa'
+}
+
 export const CARDS = [
     {
-        name: 'Duque',
-        slug: 'duque'
+        name: EnumNameCards.DUKE,
+        slug: EnumSlugCards.DUKE
     },
     {
-        name: 'Embaixadora',
-        slug: 'embaixadora'
+        name: EnumNameCards.AMBASSADOR,
+        slug: EnumSlugCards.AMBASSADOR
     },
     {
-        name: 'Capitão',
-        slug: 'capitao'
+        name: EnumNameCards.CAPTAIN,
+        slug: EnumSlugCards.CAPTAIN
     },
     {
-        name: 'Assassino',
-        slug: 'assassino'
+        name: EnumNameCards.ASSASSIN,
+        slug: EnumSlugCards.ASSASSIN
     },
     {
-        name: 'Contessa',
-        slug: 'contessa'
+        name: EnumNameCards.CONTESSA,
+        slug: EnumSlugCards.CONTESSA
     }
 ];

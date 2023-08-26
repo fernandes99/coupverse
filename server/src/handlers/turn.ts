@@ -1,24 +1,25 @@
 import { Server, Socket } from "socket.io";
 import { Global } from "../global/global";
+import { ITurn } from "../types/global";
 import { getUsersFilteredByRoom } from "../utils/general";
 
 export const registerTurnHandlers = (io: Server, socket: Socket) => {
   const global = Global.getInstance();
 
-  //   const connectRoom = (data: any) => {
-  //     const users = global.getState().users;
-  //     const newUsers = [
-  //       ...users.filter((user) => user.id !== socket.id),
-  //       {
-  //         id: socket.id,
-  //         userName: data.userName,
-  //         roomId: data.roomId,
-  //         isReady: false,
-  //       },
-  //     ];
+  const passTurn = (data: ITurn) => {
+    const users = global.getState().users;
+    const usersFiltered = getUsersFilteredByRoom(users, data.roomId);
+    const currentTurnUserIndex = usersFiltered.findIndex(
+      (user) => user.id === data.currentUser?.id
+    );
 
-  //     global.setState({ ...global, users: newUsers });
-  //   };
+    const newTurn = {
+      ...data,
+      currentUser: usersFiltered[currentTurnUserIndex + 1] ?? usersFiltered[0],
+    };
 
-  // socket.on("turn:", updateTurn);
+    io.in(data.roomId).emit("turn:update", newTurn);
+  };
+
+  socket.on("turn:pass", passTurn);
 };

@@ -18,7 +18,7 @@ export interface ICard {
   slug: string;
 }
 
-interface ITurn {
+export interface ITurn {
   roomId: string;
   currentUser: IUser | null;
 }

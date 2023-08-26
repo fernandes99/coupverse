@@ -3,6 +3,7 @@ import { registerRoomHandlers } from "./handlers/room";
 import { Global } from "./global/global";
 import { registerUserHandlers } from "./handlers/user";
 import { registerGameHandlers } from "./handlers/game";
+import { registerTurnHandlers } from "./handlers/turn";
 
 const express = require("express");
 const https = require("https");
@@ -14,7 +15,7 @@ const app = express();
 
 app.use(cors());
 
-const ENV_DEV = false;
+const ENV_DEV = true;
 const options = {
   key: fs.readFileSync(path.join(__dirname, "cert", "private.key")),
   cert: fs.readFileSync(path.join(__dirname, "cert", "certificate.crt")),
@@ -34,11 +35,16 @@ const io = new Server(server, {
 }) as Server;
 
 const onConnection = (socket: Socket) => {
+  console.log("User Connected: ", socket.id);
+
   registerRoomHandlers(io, socket);
   registerUserHandlers(io, socket);
   registerGameHandlers(io, socket);
+  registerTurnHandlers(io, socket);
 
   socket.on("disconnect", () => {
+    console.log("User Disconnected: ", socket.id);
+
     const roomId = socket.data.roomId;
     const users = global.getState().users;
     const usersFiltered = users.filter((user) => user.id !== socket.id);
