@@ -14,8 +14,8 @@ export const verifyUserOwner = (users: IGlobal["users"]) => {
   ) as IGlobal["users"];
 };
 
-export const getSelfUser = (users: IUser[], id: string) => {
-  return users.filter((user) => user.id === id);
+export const getSelfUser = (users: IUser[], socketId: string) => {
+  return users.filter((user) => user.id === socketId);
 };
 
 export const updateUser = (user: IUser, io: Server, global: any) => {

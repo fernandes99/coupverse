@@ -60,6 +60,7 @@ export const WelcomePage = ({ socket }: IWelcomePage) => {
                         <input
                             placeholder='Digite o código da sala'
                             onChange={(event) => setRoomId(event.target.value)}
+                            onKeyDown={(event) => event.key === 'Enter' && enterRoom()}
                         />
                         <button onClick={enterRoom}>Entrar na sala</button>
                         <a href='javascript:void(0)' onClick={() => setCreatingRoom(true)}>

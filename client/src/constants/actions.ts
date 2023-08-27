@@ -1,4 +1,4 @@
-import { IAction } from '../types/actions';
+import { IAction, ICounterAction } from '../types/actions';
 import { EnumNameCards, EnumSlugCards } from './cards';
 
 export const ACTIONS = [
@@ -60,17 +60,17 @@ export const ACTIONS = [
     }
 ] as IAction[];
 
-// const COUNTER_ACTIONS = [
-//     {
-//         slug: 'block_foreign_aid',
-//         influences: [EnumSlugCards.DUKE]
-//     },
-//     {
-//         slug: 'block_foreign_aid',
-//         influences: [EnumSlugCards.AMBASSADOR, EnumSlugCards.CAPTAIN]
-//     },
-//     {
-//         slug: 'block_assassinate',
-//         influences: [EnumSlugCards.CONTESSA]
-//     }
-// ];
+export const COUNTER_ACTIONS = [
+    {
+        slug: 'block_foreign_aid',
+        influences: [EnumSlugCards.DUKE]
+    },
+    {
+        slug: 'block_steal',
+        influences: [EnumSlugCards.AMBASSADOR, EnumSlugCards.CAPTAIN]
+    },
+    {
+        slug: 'block_assassinate',
+        influences: [EnumSlugCards.CONTESSA]
+    }
+] as ICounterAction[];

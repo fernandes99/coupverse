@@ -3,12 +3,12 @@ export interface IUser {
     userName: string;
     roomId: string;
     isReady: boolean;
-    isOwner: boolean;
     money: number;
     cards: ICard[];
 }
 
 interface ICard {
+    id: string;
     name: string;
     slug: string;
 }

@@ -24,6 +24,9 @@ export const S = {
     `,
     ActionHead: styled.div`
         margin-bottom: 8px;
+        h2 {
+            margin-bottom: 8px;
+        }
     `,
     ActionList: styled.ul`
         display: grid;

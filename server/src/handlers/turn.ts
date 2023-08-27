@@ -1,7 +1,11 @@
 import { Server, Socket } from "socket.io";
 import { Global } from "../global/global";
 import { ITurn, IUser } from "../types/global";
-import { getUsersFilteredByRoom, updateUser } from "../utils/general";
+import {
+  getSelfUser,
+  getUsersFilteredByRoom,
+  updateUser,
+} from "../utils/general";
 
 export const registerTurnHandlers = (io: Server, socket: Socket) => {
   const global = Global.getInstance();
@@ -10,15 +14,20 @@ export const registerTurnHandlers = (io: Server, socket: Socket) => {
     const users = global.getState().users;
     const usersFiltered = getUsersFilteredByRoom(users, data.roomId);
     const currentTurnUserIndex = usersFiltered.findIndex(
-      (user) => user.id === data.currentUser?.id
+      (user) => user.id === data.initialUser?.id
     );
-    const newTurn = {
+    const newTurnData = {
       ...data,
-      currentAction: null,
+      action: null,
+      counterAction: null,
+      round: data.round + 1,
+      title: "",
+      usersSkipped: [],
       currentUser: usersFiltered[currentTurnUserIndex + 1] ?? usersFiltered[0],
-    };
+      initialUser: usersFiltered[currentTurnUserIndex + 1] ?? usersFiltered[0],
+    } as ITurn;
 
-    io.in(data.roomId).emit("turn:update", newTurn);
+    io.in(data.roomId).emit("turn:update", newTurnData);
   };
 
   const onActionTurn = (data: ITurn) => {
@@ -28,19 +37,16 @@ export const registerTurnHandlers = (io: Server, socket: Socket) => {
   const onSkipAction = (data: ITurn) => {
     const users = global.getState().users;
     const usersFiltered = getUsersFilteredByRoom(users, data.roomId);
-    const countSkipped = data.currentAction?.countSkipped! + 1;
-    const isLastSkipped = countSkipped >= usersFiltered.length;
-
-    console.log("isLastSkipped", isLastSkipped);
-    console.log("countSkipped", countSkipped);
-    console.log("usersFiltered", usersFiltered.length);
+    const userSelf = getSelfUser(users, socket.id);
+    const newSkippedUsers = [...data.usersSkipped, userSelf];
+    const isLastSkipped = newSkippedUsers.length >= usersFiltered.length;
 
     if (isLastSkipped) {
       const userUpdated = {
-        ...data.currentUser,
-        money:
-          data.currentUser?.money! +
-          data.currentAction?.action.transactionAmount!,
+        ...data.initialUser,
+        money: data.action?.transactionAmount
+          ? data.initialUser?.money! + data.action?.transactionAmount!
+          : data.initialUser.money,
       } as IUser;
 
       updateUser(userUpdated, io, global);
@@ -48,13 +54,12 @@ export const registerTurnHandlers = (io: Server, socket: Socket) => {
       return;
     }
 
-    io.in(data.roomId).emit("turn:update", {
+    const turnData = {
       ...data,
-      currentAction: {
-        ...data.currentAction,
-        countSkipped: countSkipped,
-      },
-    });
+      usersSkipped: newSkippedUsers,
+    } as ITurn;
+
+    io.in(data.roomId).emit("turn:update", turnData);
   };
 
   socket.on("turn:pass", passTurn);

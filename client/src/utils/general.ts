@@ -9,8 +9,12 @@ export const getRandomIntFromInterval = (min: number, max: number) => {
 };
 
 export const getRandomCards = () => {
-    return [
+    const randomCards = [
         CARDS[getRandomIntFromInterval(0, CARDS.length - 1)],
         CARDS[getRandomIntFromInterval(0, CARDS.length - 1)]
     ];
+
+    return randomCards.map((card) => {
+        return { ...card, id: crypto.randomUUID() };
+    });
 };

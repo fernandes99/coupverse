@@ -7,12 +7,15 @@ interface IUserBlock {
     money: number;
     showCards: boolean;
     cards: {
+        id: string;
         name: string;
         slug: string;
     }[];
 }
 
 export const UserBlock = ({ name, money, cards, showCards }: IUserBlock) => {
+    console.log('cards', cards);
+
     return (
         <S.Box>
             <S.Title>{name}</S.Title>
@@ -29,7 +32,7 @@ export const UserBlock = ({ name, money, cards, showCards }: IUserBlock) => {
             <S.CardBlock>
                 <p>{showCards ? 'Suas cartas' : `Cartas de ${name}`}</p>
                 {cards?.map((card) => (
-                    <S.Card key={card.slug} show={showCards}>
+                    <S.Card key={card.id} show={showCards}>
                         {showCards ? card.name : ''}
                     </S.Card>
                 ))}

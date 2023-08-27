@@ -1,6 +1,6 @@
 export interface IGlobal {
   users: IUser[];
-  turns?: ITurn[]; // TODO: separar estados dos turnos e usuários (não utilizar global)
+  turns?: ITurn[]; // TODO: split states (remove on global)
 }
 
 export interface IUser {
@@ -8,24 +8,25 @@ export interface IUser {
   userName: string;
   roomId: string;
   isReady: boolean;
-  isOwner: boolean;
   money: number;
   cards: ICard[];
 }
 
 export interface ICard {
+  id: string;
   name: string;
   slug: string;
 }
 
 export interface ITurn {
   roomId: string;
-  currentUser: IUser | null;
-  currentAction: {
-    action: IAction;
-    message: string;
-    countSkipped: number;
-  } | null;
+  title: string;
+  action: IAction | null;
+  counterAction: ICounterAction | null;
+  usersSkipped: string[];
+  initialUser: IUser;
+  currentUser: IUser;
+  round: number;
 }
 
 export interface IAction {
@@ -42,4 +43,16 @@ export interface IAction {
   blockableBy: string[];
   isChallengeable: boolean;
   transactionAmount: number;
+}
+
+export type ICardSlug =
+  | "duke"
+  | "ambassador"
+  | "captain"
+  | "assassin"
+  | "contessa";
+
+export interface ICounterAction {
+  slug: "block_foreign_aid" | "block_steal" | "block_assassinate";
+  influences: ICardSlug[];
 }
