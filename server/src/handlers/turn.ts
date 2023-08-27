@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { Global } from "../global/global";
-import { ITurn } from "../types/global";
-import { getUsersFilteredByRoom } from "../utils/general";
+import { ITurn, IUser } from "../types/global";
+import { getUsersFilteredByRoom, updateUser } from "../utils/general";
 
 export const registerTurnHandlers = (io: Server, socket: Socket) => {
   const global = Global.getInstance();
@@ -29,10 +29,23 @@ export const registerTurnHandlers = (io: Server, socket: Socket) => {
     const users = global.getState().users;
     const usersFiltered = getUsersFilteredByRoom(users, data.roomId);
     const countSkipped = data.currentAction?.countSkipped! + 1;
-    const isLastSkipped = countSkipped + 1 >= usersFiltered.length;
+    const isLastSkipped = countSkipped >= usersFiltered.length;
+
+    console.log("isLastSkipped", isLastSkipped);
+    console.log("countSkipped", countSkipped);
+    console.log("usersFiltered", usersFiltered.length);
 
     if (isLastSkipped) {
-      return passTurn(data);
+      const userUpdated = {
+        ...data.currentUser,
+        money:
+          data.currentUser?.money! +
+          data.currentAction?.action.transactionAmount!,
+      } as IUser;
+
+      updateUser(userUpdated, io, global);
+      passTurn(data);
+      return;
     }
 
     io.in(data.roomId).emit("turn:update", {

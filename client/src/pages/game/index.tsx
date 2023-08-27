@@ -66,7 +66,11 @@ export const GamePage = ({ socket }: IGamePage) => {
         <Container>
             <S.Content>
                 <S.Title>
-                    Turno de <strong>{turn?.currentUser?.userName}</strong>
+                    {turn.currentAction?.message || (
+                        <>
+                            Turno de <strong>{turn?.currentUser?.userName}</strong>
+                        </>
+                    )}
                 </S.Title>
                 <S.UserList>
                     {users?.map((user) => (

@@ -17,12 +17,22 @@ interface IActionsBlock {
 
 export const ActionsBlock = ({ turn, userSelf, onAction, onSkip }: IActionsBlock) => {
     const [secondsToAction, setSecondsToAction] = useState(ACTION_TIME_DEFAULT);
+    const [skipped, setSkipped] = useState(false);
     const isSelfTurn = useMemo(() => {
         return turn?.currentUser?.id === userSelf?.id;
     }, [turn, userSelf]);
 
+    const skip = () => {
+        setSkipped(true);
+        onSkip();
+    };
+
     useEffect(() => {
-        if (!turn.currentAction) return setSecondsToAction(ACTION_TIME_DEFAULT);
+        if (!turn.currentAction) {
+            setSecondsToAction(ACTION_TIME_DEFAULT);
+            setSkipped(false);
+            return;
+        }
 
         const interval = setInterval(() => {
             if (secondsToAction > 0) {
@@ -30,7 +40,7 @@ export const ActionsBlock = ({ turn, userSelf, onAction, onSkip }: IActionsBlock
             }
 
             setSecondsToAction(ACTION_TIME_DEFAULT);
-            onSkip();
+            skip();
         }, 1000);
 
         return () => {
@@ -78,9 +88,15 @@ export const ActionsBlock = ({ turn, userSelf, onAction, onSkip }: IActionsBlock
             {turn.currentAction && !isSelfTurn && (
                 <>
                     <S.ActionButtons>
-                        <button>Desafiar</button>
-                        {turn.currentAction?.action.blockableBy.length && <button>Bloquear</button>}
-                        <button onClick={onSkip}>Passar</button>
+                        {!skipped && (
+                            <>
+                                <button>Desafiar</button>
+                                {turn.currentAction?.action.blockableBy.length && (
+                                    <button>Bloquear</button>
+                                )}
+                                <button onClick={skip}>Passar</button>
+                            </>
+                        )}
                     </S.ActionButtons>
                     <S.ActionTimeBar>
                         <div
