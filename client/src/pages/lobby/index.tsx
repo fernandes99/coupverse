@@ -7,12 +7,14 @@ import { S } from './styles';
 import { storage } from '../../utils/storage';
 import { IUser } from '../../types/users';
 import { getRandomCards } from '../../utils/general';
+import { useGlobalContext } from '../../context/global';
 
 interface ILobbyPage {
     socket: Socket;
 }
 
 export const LobbyPage = ({ socket }: ILobbyPage) => {
+    const { setLoading } = useGlobalContext();
     const { roomId } = useParams();
     const navigate = useNavigate();
     const userName = storage.get('username') || `Anônimo${Math.floor(Math.random() * 1000)}`;
@@ -22,6 +24,8 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
     useMemo(() => socket.emit('user:on-ready', { roomId, isReady }), [isReady]);
 
     useEffect(() => {
+        setLoading(!connectedUsers.length);
+
         if (!connectedUsers.length) return;
         if (connectedUsers?.every((user) => user.isReady)) {
             navigate(`/sala/${roomId}`);
