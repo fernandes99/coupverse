@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { registerRoomHandlers } from "./handlers/room";
 import { Global } from "./global/global";
+import { registerRoomHandlers } from "./handlers/room";
 import { registerUserHandlers } from "./handlers/user";
 import { registerGameHandlers } from "./handlers/game";
 import { registerTurnHandlers } from "./handlers/turn";
