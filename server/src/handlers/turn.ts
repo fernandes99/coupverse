@@ -140,13 +140,12 @@ export const registerTurnHandlers = (io: Server, socket: Socket) => {
 
       const userUpdated = {
         ...data.initialUser,
-        money: data.action?.transactionAmount
-          ? data.initialUser?.money! + data.action?.transactionAmount!
-          : data.initialUser.money,
+        money: data.initialUser.money + data.action?.transactionAmount!,
       } as IUser;
 
       updateUser(userUpdated, io, global);
       passTurn(data);
+      return;
     }
 
     const turnData = {
