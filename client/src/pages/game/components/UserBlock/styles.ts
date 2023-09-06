@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 export const S = {
-    Box: styled.div`
+    Box: styled.li`
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -17,10 +17,6 @@ export const S = {
     Status: styled.div`
         display: flex;
         justify-content: space-between;
-
-        svg {
-            color: #e43333;
-        }
     `,
     LifeBlock: styled.div`
         display: flex;

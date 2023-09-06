@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { S } from './styles';
 import { Logo } from '../../components/Logo';
 import { Socket } from 'socket.io-client';
@@ -6,6 +6,7 @@ import { getRandomString } from '../../utils/general';
 import { Container } from '../../styles/layout';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '../../utils/storage';
+import { toast } from 'react-hot-toast';
 
 interface IWelcomePage {
     socket: Socket;
@@ -27,10 +28,20 @@ export const WelcomePage = ({ socket }: IWelcomePage) => {
     };
 
     const enterRoom = () => {
+        if (!roomId) {
+            return toast('Insira o código da sala', {
+                icon: '🔑'
+            });
+        }
+
         storage.set('username', userName || `Anônimo${Math.random().toFixed(5)}`);
         socket.emit('connect_room', { roomId, userName });
         navigate(`/sala/${roomId}/lobby`);
     };
+
+    useEffect(() => {
+        setUserName(storage.get('username') || '');
+    }, [storage]);
 
     return (
         <Container>
@@ -44,6 +55,7 @@ export const WelcomePage = ({ socket }: IWelcomePage) => {
                     <S.Form>
                         <input
                             placeholder='Digite seu nome'
+                            defaultValue={userName}
                             onChange={(event) => setUserName(event.target.value)}
                         />
                         <button onClick={createRoom}>Criar na sala</button>
@@ -55,6 +67,7 @@ export const WelcomePage = ({ socket }: IWelcomePage) => {
                     <S.Form>
                         <input
                             placeholder='Digite seu nome'
+                            defaultValue={userName}
                             onChange={(event) => setUserName(event.target.value)}
                         />
                         <input

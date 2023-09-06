@@ -12,9 +12,9 @@ import { Toaster, toast } from 'react-hot-toast';
 import { SECOND } from './constants/times';
 import { GlobalContext, IGlobalContext } from './context/global';
 
-// const localhost = 'http://localhost:8080'; // inserir em config env
-const coupverse = 'https://coupverse.one:8080'; // inserir em config env
-const socket = io.connect(coupverse);
+const localhost = 'http://localhost:8080'; // inserir em config env
+// const coupverse = 'https://coupverse.one:8080'; // inserir em config env
+const socket = io.connect(localhost);
 
 const App = () => {
     const [loading, setLoading] = useState<IGlobalContext['loading']>(false);
@@ -24,7 +24,7 @@ const App = () => {
 
         const timeout = setTimeout(() => {
             if (loading) {
-                toast.error('Erro ao se conectar, tente novamente mais tarde!');
+                toast.error('Erro ao se conectar.');
                 setLoading(false);
             }
         }, SECOND * 30);

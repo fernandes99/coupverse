@@ -1,14 +1,16 @@
+import { ICardSlug } from '../constants/cards';
+
 export interface IUser {
     id: string;
     userName: string;
     roomId: string;
     isReady: boolean;
     money: number;
-    cards: ICard[];
+    cards: ICard[] | [];
 }
 
-interface ICard {
+export interface ICard {
     id: string;
     name: string;
-    slug: string;
+    slug: ICardSlug;
 }

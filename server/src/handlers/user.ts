@@ -23,7 +23,7 @@ export const registerUserHandlers = (io: Server, socket: Socket) => {
       return user;
     });
 
-    global.setState({ ...global, users: [...newUsers] });
+    global.setState({ ...global, users: newUsers });
     io.in(data.roomId).emit(
       "users:update",
       getUsersFilteredByRoom(newUsers, data.roomId)
@@ -34,6 +34,18 @@ export const registerUserHandlers = (io: Server, socket: Socket) => {
     updateUser(user, io, global);
   };
 
+  const onLoseUser = (data: IUser) => {
+    const users = global.getState().users;
+    const newUsers = users.filter((user) => user.id !== data.id);
+
+    global.setState({ ...global, users: newUsers });
+    io.in(data.roomId).emit(
+      "users:update",
+      getUsersFilteredByRoom(newUsers, data.roomId)
+    );
+  };
+
   socket.on("user:on-ready", onReadyUser);
   socket.on("user:update", onUpdateUser);
+  socket.on("user:on-lose", onLoseUser);
 };

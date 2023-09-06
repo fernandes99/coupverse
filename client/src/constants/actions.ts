@@ -62,15 +62,15 @@ export const ACTIONS = [
 
 export const COUNTER_ACTIONS = [
     {
-        slug: 'block_foreign_aid',
+        slug: 'block-foreign-aid',
         influences: [EnumSlugCards.DUKE]
     },
     {
-        slug: 'block_steal',
+        slug: 'block-steal',
         influences: [EnumSlugCards.AMBASSADOR, EnumSlugCards.CAPTAIN]
     },
     {
-        slug: 'block_assassinate',
+        slug: 'block-assassinate',
         influences: [EnumSlugCards.CONTESSA]
     }
 ] as ICounterAction[];

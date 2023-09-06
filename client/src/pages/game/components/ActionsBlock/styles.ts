@@ -102,5 +102,47 @@ export const S = {
             height: 100%;
             border-radius: 2px;
         }
+    `,
+    ActionUserList: styled.ul`
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-top: 16px;
+
+        li {
+            border: 1px solid #e5e5e5;
+            transition: all 0.3s;
+            cursor: pointer;
+
+            &:hover {
+                transform: translateY(-2px);
+            }
+        }
+    `,
+    CardBlock: styled.div`
+        display: flex;
+        gap: 4px;
+    `,
+    Card: styled.div`
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 16px;
+        min-width: 250px;
+        min-height: 38px;
+        border: 1px solid #e4e4e4;
+        border-radius: 8px;
+        transition: all 0.3s;
+        cursor: pointer;
+
+        p {
+            font-weight: 500;
+            color: #232423;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+        }
     `
 };

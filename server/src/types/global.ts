@@ -23,10 +23,12 @@ export interface ITurn {
   title: string;
   action: IAction | null;
   counterAction: ICounterAction | null;
+  challangeAction: IChallangeAction | null;
   usersSkipped: string[];
   initialUser: IUser;
   currentUser: IUser;
   round: number;
+  userSelected?: IUser | null;
 }
 
 export interface IAction {
@@ -53,6 +55,12 @@ export type ICardSlug =
   | "contessa";
 
 export interface ICounterAction {
-  slug: "block_foreign_aid" | "block_steal" | "block_assassinate";
+  slug: "block-foreign_aid" | "block-steal" | "block-assassinate";
   influences: ICardSlug[];
+}
+
+export interface IChallangeAction {
+  userTarget: IUser;
+  userChallenger: IUser;
+  isSuccessful: boolean;
 }

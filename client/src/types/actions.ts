@@ -1,4 +1,5 @@
 import { ICardSlug } from '../constants/cards';
+import { IUser } from './users';
 
 export interface IAction {
     slug: 'income' | 'foreign-aid' | 'coup' | 'tax' | 'assassinate' | 'exchange' | 'steal';
@@ -10,6 +11,12 @@ export interface IAction {
 }
 
 export interface ICounterAction {
-    slug: 'block_foreign_aid' | 'block_steal' | 'block_assassinate';
+    slug: 'block-foreign-aid' | 'block-steal' | 'block-assassinate';
     influences: ICardSlug[];
+}
+
+export interface IChallangeAction {
+    userTarget: IUser;
+    userChallenger: IUser;
+    isSuccessful: boolean;
 }

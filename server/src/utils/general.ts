@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { IGlobal, IUser } from "../types/global";
+import { CARDS } from "../constants/cards";
 
 export const getUsersFilteredByRoom = (
   users: IGlobal["users"],
@@ -28,4 +29,30 @@ export const updateUser = (user: IUser, io: Server, global: any) => {
     "users:update",
     getUsersFilteredByRoom(newUsers, user.roomId)
   );
+};
+
+export const setLoseUser = (user: IUser, io: Server, global: any) => {
+  const users = global.getState().users as IUser[];
+  const newUsers = users.filter((u) => u.id !== user.id);
+
+  global.setState({ ...global, users: newUsers });
+  io.in(user.roomId).emit(
+    "users:update",
+    getUsersFilteredByRoom(newUsers, user.roomId)
+  );
+};
+
+export const getRandomIntFromInterval = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+export const getRandomCards = () => {
+  const randomCards = [
+    CARDS[getRandomIntFromInterval(0, CARDS.length - 1)],
+    CARDS[getRandomIntFromInterval(0, CARDS.length - 1)],
+  ];
+
+  return randomCards.map((card) => {
+    return { ...card, id: `${Math.random()}` };
+  });
 };

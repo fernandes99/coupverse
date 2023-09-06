@@ -8,6 +8,9 @@ import { storage } from '../../utils/storage';
 import { IUser } from '../../types/users';
 import { getRandomCards } from '../../utils/general';
 import { useGlobalContext } from '../../context/global';
+import { BiCopy } from 'react-icons/bi';
+import useCopyToClipboard from '../../utils/hooks/useClipboard';
+import { toast } from 'react-hot-toast';
 
 interface ILobbyPage {
     socket: Socket;
@@ -20,14 +23,28 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
     const userName = storage.get('username') || `Anônimo${Math.floor(Math.random() * 1000)}`;
     const [connectedUsers, setConnectedUsers] = useState<IUser[]>([]);
     const [isReady, setIsReady] = useState(false);
+    const [, copyToClipboard] = useCopyToClipboard('', 3000);
 
-    useMemo(() => socket.emit('user:on-ready', { roomId, isReady }), [isReady]);
+    const copyRoomId = () => {
+        copyToClipboard(roomId);
+        toast.success('Código da sala copiado');
+    };
+
+    useMemo(() => {
+        if (connectedUsers?.length < 2 && isReady) {
+            toast('É necessário 2 jogadores ou mais para iniciar', {
+                icon: '🥲'
+            });
+        }
+
+        socket.emit('user:on-ready', { roomId, isReady });
+    }, [isReady]);
 
     useEffect(() => {
         setLoading(!connectedUsers.length);
 
-        if (!connectedUsers.length) return;
-        if (connectedUsers?.every((user) => user.isReady)) {
+        if (connectedUsers?.length < 2) return;
+        if (connectedUsers.every((user) => user.isReady)) {
             navigate(`/sala/${roomId}`);
         }
     }, [connectedUsers]);
@@ -42,13 +59,22 @@ export const LobbyPage = ({ socket }: ILobbyPage) => {
         socket.emit('room:connect', { roomId, userName, money: 2, cards: getRandomCards() });
     }, [roomId]);
 
-    console.log('connectedUsers', connectedUsers);
+    console.log('lobby > connectedUsers', connectedUsers);
 
     return (
         <Container>
             <S.Content>
                 <Logo />
-                <p>Usuários na sala:</p>
+                <S.Head>
+                    <p>Usuários na sala:</p>
+                    <S.Flex>
+                        <S.CopyBlock onClick={copyRoomId}>
+                            <span>Código:</span>
+                            <S.CodeRoom>{roomId}</S.CodeRoom>
+                            <BiCopy />
+                        </S.CopyBlock>
+                    </S.Flex>
+                </S.Head>
                 <S.UserList>
                     <>
                         {connectedUsers?.map((user) => (

@@ -14,15 +14,19 @@ interface IUserBlock {
 }
 
 export const UserBlock = ({ name, money, cards, showCards }: IUserBlock) => {
-    console.log('cards', cards);
-
     return (
         <S.Box>
             <S.Title>{name}</S.Title>
             <S.Status>
                 <S.LifeBlock>
-                    <BsSuitHeartFill size={22} />
-                    <BsSuitHeartFill size={22} />
+                    <BsSuitHeartFill
+                        size={22}
+                        style={{ color: cards[0] ? '#e43333' : '#d3d3d3' }}
+                    />
+                    <BsSuitHeartFill
+                        size={22}
+                        style={{ color: cards[1] ? '#e43333' : '#d3d3d3' }}
+                    />
                 </S.LifeBlock>
                 <S.MoneyBlock>
                     <span>{money}</span>

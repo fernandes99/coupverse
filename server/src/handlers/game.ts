@@ -16,6 +16,7 @@ export const registerGameHandlers = (io: Server, socket: Socket) => {
     const turnData = {
       action: null,
       counterAction: null,
+      challangeAction: null,
       currentUser: userFiltered[0],
       initialUser: userFiltered[0],
       roomId: roomId,
