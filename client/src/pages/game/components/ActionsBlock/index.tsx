@@ -11,7 +11,7 @@ import { S } from './styles';
 import { Modal } from '../../../../components/Modal';
 import { UserBlock } from '../UserBlock';
 
-const ACTION_TIME_DEFAULT = 2000;
+const ACTION_TIME_DEFAULT = 15;
 
 interface IModal {
     show: boolean;
@@ -205,11 +205,15 @@ export const ActionsBlock = ({
                                             <button onClick={challenge}>Desafiar</button>
                                         )}
 
-                                        {turn.action.blockableBy?.map((slug) => (
-                                            <button key={slug} onClick={() => block(slug)}>
-                                                Bloquear ({slug})
-                                            </button>
-                                        ))}
+                                        {!(
+                                            turn.action.slug === 'steal' &&
+                                            turn.userSelected?.id !== userSelf.id
+                                        ) &&
+                                            turn.action.blockableBy?.map((slug) => (
+                                                <button key={slug} onClick={() => block(slug)}>
+                                                    Bloquear ({slug})
+                                                </button>
+                                            ))}
 
                                         <button onClick={skip}>Passar</button>
                                     </>
