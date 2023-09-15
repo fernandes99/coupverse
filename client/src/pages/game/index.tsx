@@ -10,6 +10,7 @@ import { ActionsBlock } from './components/ActionsBlock';
 import { IAction } from '../../types/actions';
 import { COUNTER_ACTIONS } from '../../constants/actions';
 import { ICardSlug } from '../../constants/cards';
+import { getRandomCards } from '../../utils/general';
 
 interface IGamePage {
     socket: Socket;
@@ -163,6 +164,13 @@ export const GamePage = ({ socket }: IGamePage) => {
                     : `${self?.userName} perde 1 carta.`
             }`
         } as ITurn);
+
+        if (!isSuccessful) {
+            socket.emit('user:update', {
+                ...turn.currentUser,
+                cards: getRandomCards()
+            });
+        }
     };
 
     const onDiscard = (user: IUser, cardSelected: ICard) => {
